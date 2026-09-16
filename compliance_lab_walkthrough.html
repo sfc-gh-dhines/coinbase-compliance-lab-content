@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="snowflake-source" content="cortex-agent-authored" />
+  <title>Coinbase Compliance Lab / AML Alert Triage</title>
+  <script type="application/json" id="snowflake-report-metadata">
+  {
+    "generated": "2026-09-15",
+    "intent": "Interactive lab walkthrough for Coinbase Compliance AML workshop. Renders prompts from prompts.md with dynamic database/schema/warehouse substitution.",
+    "sections": [
+      { "id": "before-you-start", "title": "Before you start", "producerNotes": "CoCo context-setting prompt with dynamic config values." },
+      { "id": "block-1", "title": "Block 1 - How bad is the current rules engine?", "producerNotes": "Prompts 1.1-1.3 analyzing legacy AML alert precision." },
+      { "id": "block-2", "title": "Block 2 - Build features", "producerNotes": "Prompts 2.1-2.4 for Feature Store and feature views." },
+      { "id": "block-3", "title": "Block 3 - Train and register", "producerNotes": "Prompts 3.1-3.5 for model training, evaluation, and registry." },
+      { "id": "block-4", "title": "Block 4 - Score, and prove it is worth doing", "producerNotes": "Prompts 4.1-4.5 for inference, capacity comparison, and SHAP." },
+      { "id": "block-5", "title": "Block 5 - Monitoring", "producerNotes": "Prompts 5.1-5.3 for drift monitoring and adversarial simulation." },
+      { "id": "block-6", "title": "Block 6 - Put an agent on top", "producerNotes": "Prompts 6.1-6.5 for semantic view, Cortex Search, and agent creation." }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --navy-900: light-dark(#0c1929, #0c1929);
+      --navy-800: light-dark(#11253d, #11253d);
+      --navy-700: light-dark(#183553, #183553);
+      --blue-500: light-dark(#2d7ff9, #4d9aff);
+      --blue-400: light-dark(#4d9aff, #6db3ff);
+      --blue-100: light-dark(#dbeafe, #1e3a5f);
+      --text-primary: light-dark(#1a2332, #e8ecf1);
+      --text-secondary: light-dark(#4a5568, #a0aec0);
+      --text-muted: light-dark(#718096, #718096);
+      --bg-page: light-dark(#f7f8fc, #0d1117);
+      --bg-surface: light-dark(#ffffff, #161b22);
+      --bg-code: light-dark(#f0f2f8, #1c2333);
+      --bg-code-header: light-dark(#e2e6f0, #252d3d);
+      --bg-config: light-dark(#0c1929, #0c1929);
+      --border-light: light-dark(#e2e8f0, #2d3748);
+      --border-code: light-dark(#d0d7e3, #2d3748);
+      --callout-bg: light-dark(#fef9e7, #332b00);
+      --callout-border: light-dark(#f0c929, #f0c929);
+      --callout-text: light-dark(#6b5900, #fde68a);
+      --success-bg: light-dark(#ecfdf5, #0d2818);
+      --success-border: light-dark(#6ee7b7, #34d399);
+      --success-text: light-dark(#065f46, #a7f3d0);
+      --circle-bg: light-dark(#2d7ff9, #4d9aff);
+      --circle-text: light-dark(#ffffff, #ffffff);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0; padding: 0;
+      color: var(--text-primary);
+      background: var(--bg-page);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img, svg { max-width: 100%; height: auto; }
+
+    /* Config Bar */
+    .config-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-config);
+      border-bottom: 2px solid var(--blue-500);
+      padding: 10px clamp(12px, 3vw, 24px);
+    }
+    .config-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    }
+    .config-label {
+      color: #8b9cc0; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+    .config-field { display: flex; flex-direction: column; flex: 1; min-width: 120px; }
+    .config-field input {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; padding: 6px 10px;
+      color: #e8ecf1; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px; outline: none;
+    }
+    .config-field input:focus {
+      border-color: var(--blue-500);
+      box-shadow: 0 0 0 2px rgba(45,127,249,0.25);
+    }
+    .config-title {
+      color: #e8ecf1; font-weight: 700; font-size: 13px;
+      margin-right: 8px; white-space: nowrap;
+    }
+
+    /* Main Content */
+    .main-container {
+      max-width: 860px; width: 100%;
+      margin: 0 auto;
+      padding: clamp(16px, 4vw, 40px) clamp(16px, 4vw, 24px) 80px;
+    }
+
+    /* Header */
+    .page-header {
+      margin-bottom: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .page-header h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800; margin: 0 0 8px 0;
+      color: var(--text-primary);
+    }
+    .page-header .subtitle {
+      font-size: clamp(14px, 2.5vw, 17px);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+    .page-header .intro {
+      margin-top: 16px; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.7;
+    }
+
+    /* Environment Table */
+    .env-table-wrap { overflow-x: auto; margin: 24px 0; }
+    .env-table {
+      border-collapse: collapse; width: 100%;
+      border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+    .env-table th, .env-table td {
+      padding: 10px 16px; text-align: left;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+    }
+    .env-table th {
+      background: var(--bg-code-header);
+      font-weight: 600; white-space: nowrap; width: 200px;
+    }
+    .env-table td code {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      background: var(--bg-code); padding: 2px 6px; border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* Section Headers */
+    .block-section { margin-top: 56px; }
+    .block-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--blue-500);
+    }
+    .block-number {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--circle-bg);
+      color: var(--circle-text);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px;
+    }
+    .block-title {
+      font-size: clamp(17px, 3vw, 22px);
+      font-weight: 700; margin: 0;
+      color: var(--text-primary);
+    }
+
+    /* Prompt Cards */
+    .prompt-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-code);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .prompt-label {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-code-header);
+      padding: 8px 14px;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .prompt-note {
+      font-size: 11px; font-weight: 500;
+      text-transform: none; letter-spacing: 0;
+      color: var(--text-muted); font-style: italic;
+    }
+    .prompt-code-wrap { position: relative; }
+    .prompt-code {
+      display: block;
+      background: var(--bg-code);
+      padding: 16px 52px 16px 16px;
+      margin: 0;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px; line-height: 1.7;
+      white-space: pre-wrap; word-break: break-word;
+      color: var(--text-primary);
+      overflow-x: auto;
+    }
+    .copy-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--bg-code-header);
+      border: 1px solid var(--border-code);
+      border-radius: 6px; padding: 5px 10px;
+      font-size: 11px; font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .copy-btn:hover {
+      background: var(--blue-500); color: #fff;
+      border-color: var(--blue-500);
+    }
+    .copy-btn.copied {
+      background: #059669; color: #fff;
+      border-color: #059669;
+    }
+
+    /* Callout */
+    .callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--callout-border);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 24px 0;
+      font-size: 14px;
+      color: var(--callout-text);
+      font-weight: 500;
+    }
+
+    /* Checklist */
+    .checklist {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .checklist h3 {
+      margin: 0 0 12px 0; font-size: 16px;
+      color: var(--success-text);
+    }
+    .checklist ul { margin: 0; padding-left: 20px; }
+    .checklist li {
+      font-size: 14px; margin-bottom: 6px;
+      color: var(--success-text);
+    }
+
+    /* Sub-section titles */
+    .sub-title {
+      font-size: 18px; font-weight: 700;
+      margin: 48px 0 16px 0;
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .config-inner { gap: 8px; }
+      .config-title { width: 100%; margin-bottom: 4px; }
+      .config-field { min-width: 0; }
+      .block-header { gap: 10px; }
+      .block-number { width: 32px; height: 32px; font-size: 14px; }
+      .prompt-code { font-size: 12px; padding: 12px 44px 12px 12px; }
+      .env-table th { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Config Bar -->
+  <div class="config-bar">
+    <div class="config-inner">
+      <span class="config-title">Lab Config</span>
+      <div class="config-field">
+        <span class="config-label">Warehouse</span>
+        <input type="text" id="cfg-warehouse" value="COINBASE_WH" />
+      </div>
+      <div class="config-field">
+        <span class="config-label">Database</span>
+        <input type="text" id="cfg-database" value="COINBASE_DB" />
+      </div>
+      <div class="config-field">
+        <span class="config-label">Your Schema</span>
+        <input type="text" id="cfg-schema" value="MY_LAB" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <h1>Coinbase Compliance Lab / AML Alert Triage</h1>
+      <p class="subtitle">Build an end-to-end AML triage system using Snowflake ML, Feature Store, Model Registry, monitoring, and a Cortex Agent -- entirely by prompting.</p>
+      <p class="intro">Everything below is a prompt for <strong>Cortex Code Desktop</strong>. Paste each one, read what CoCo proposes, then approve or push back. You are not expected to write SQL or Python today. If CoCo produces something you do not understand, ask it to explain the step before you run it.</p>
+    </div>
+
+    <!-- Environment Table -->
+    <div class="env-table-wrap">
+      <table class="env-table">
+        <tr><th>Your schema</th><td><code class="dynamic" data-template="{{DATABASE}}.{{SCHEMA}}"></code></td></tr>
+        <tr><th>Read-only workshop data</th><td><code class="dynamic" data-template="{{DATABASE}}.COINBASE_COMPLIANCE"></code></td></tr>
+        <tr><th>Warehouse</th><td><code class="dynamic" data-template="{{WAREHOUSE}}"></code></td></tr>
+        <tr><th>Compute pool for training</th><td><code>COMPLIANCE_LAB_POOL</code></td></tr>
+      </table>
+    </div>
+
+    <!-- Before You Start -->
+    <div id="before-you-start">
+      <h2 class="sub-title">Before you start</h2>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Run this so CoCo has its bearings:</p>
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Setup</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Set my context to {{DATABASE}}.{{SCHEMA}} on warehouse {{WAREHOUSE}}. Then describe every table in {{DATABASE}}.COINBASE_COMPLIANCE: row counts, grain, and how they join to each other. Keep it brief."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 1 -->
+    <div class="block-section" id="block-1">
+      <div class="block-header">
+        <div class="block-number">1</div>
+        <h2 class="block-title">How bad is the current rules engine?</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 1.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="In {{DATABASE}}.COINBASE_COMPLIANCE, FACT_AML_ALERT holds alerts raised by a legacy threshold-based transaction monitoring engine, with the disposition the investigation reached. Calculate the overall precision of the rules engine, and precision broken down by rule. Show alert volume alongside precision."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 1.2</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Using REVIEW_MINUTES, work out how many analyst hours are spent per genuine true positive found. Show the total review hours consumed by alerts that turned out to be false positives."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 1.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Compare the accounts that generate alerts against the accounts that generate true positives. Are there patterns in the transaction data (FACT_MONITORED_TXN) that distinguish genuine cases, which the amount-threshold rules in DIM_AML_RULE do not look at? Propose the behavioural signals you would want."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="callout">Stop here and compare notes with the room before Block 2.</div>
+    </div>
+
+    <!-- Block 2 -->
+    <div class="block-section" id="block-2">
+      <div class="block-header">
+        <div class="block-number">2</div>
+        <h2 class="block-title">Build features</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 2.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Create a Snowflake Feature Store in my schema. Register an entity keyed on CUSTOMER_ID."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 2.2</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Build a feature view over {{DATABASE}}.COINBASE_COMPLIANCE.FACT_MONITORED_TXN with behavioural features for AML risk, computed on trailing 7 and 30 day windows per customer. Include at minimum:
+
+- count and value of inbound transactions between 8,000 and 10,000
+- ratio of outbound to inbound value
+- distinct counterparty count, and the share of outbound value going to the single largest counterparty
+- how many other platform accounts share that same counterparty
+- same-day offsetting buy and sell value in the same asset
+- share of transactions occurring between 01:00 and 06:00
+- days since the previous transaction
+
+Explain what each feature is trying to detect before you create anything."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 2.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Build a second feature view over DIM_ACCOUNT_PROFILE with account-level features: account age in days, KYC level, jurisdiction risk tier, PEP flag, and the ratio of actual trailing 30-day volume to EXPECTED_MONTHLY_VOLUME_USD."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 2.4</span><span class="prompt-note">Read the output carefully</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Build my training spine as one row per alert from FACT_AML_ALERT, keyed on CUSTOMER_ID with ALERT_DATE as the timestamp, labelled with DISPOSITION.
+
+Then retrieve feature values against that spine using point-in-time correct lookups, so that every feature is computed as of ALERT_DATE and never includes transactions that happened after the alert was raised.
+
+Before you run it, explain to me what would go wrong if the features were computed as of today instead."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 3 -->
+    <div class="block-section" id="block-3">
+      <div class="block-header">
+        <div class="block-number">3</div>
+        <h2 class="block-title">Train and register</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 3.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Split the training set into train and test. Because this is a rare-event problem, tell me the class balance in each split and explain how you chose the split strategy."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 3.2</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Train an XGBoost classifier on the training set as a Snowflake ML Job running on the COMPLIANCE_LAB_POOL compute pool. Report ROC AUC, PR AUC, precision, recall and accuracy on the test set."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 3.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Which of those metrics is misleading at this base rate, and why? What would a model that always predicts FALSE_POSITIVE score on each metric?"></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 3.4</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Run a small hyperparameter sweep, no more than 12 trials, optimising for PR AUC rather than accuracy. Show me the trials ranked."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 3.5</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Log the best model to the Snowflake Model Registry in my schema as AML_ALERT_TRIAGE, version V1. Attach the test metrics and a description of what it predicts and what it must not be used for. Then show me the registered versions."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 4 -->
+    <div class="block-section" id="block-4">
+      <div class="block-header">
+        <div class="block-number">4</div>
+        <h2 class="block-title">Score, and prove it is worth doing</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 4.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Use the registered model to score every alert in FACT_AML_ALERT from SQL, not Python. Write the results to a table in my schema with the alert id, the model score, and the actual disposition."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 4.2</span><span class="prompt-note">The number that matters</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Our analysts have fixed capacity: assume they can review 500 alerts. Compare how many true positives they find if they review the top 500 by rule severity, against the top 500 by model score. Hold review volume constant. Present it as a simple before-and-after table."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 4.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Plot precision against review volume for the model, from the top 100 alerts through to all of them. Where does the curve flatten out? What review capacity would you recommend based on that curve?"></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 4.4</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Find the accounts the model scores in the top 200 that never generated a high-severity rule alert. What is different about their behaviour?"></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 4.5</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="For the five highest-scoring alerts, produce SHAP explanations and turn each one into two or three sentences an investigator could put in a case narrative. Cite the specific feature values, not the score."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 5 -->
+    <div class="block-section" id="block-5">
+      <div class="block-header">
+        <div class="block-number">5</div>
+        <h2 class="block-title">Monitoring</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 5.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Create a Model Monitor on my inference table for AML_ALERT_TRIAGE, tracking both prediction drift and feature drift."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 5.2</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Simulate the launderers adapting: create a copy of recent transactions where amounts shift upward out of the 8k-10k band and counterparty mix moves toward self-custody. Score it with the model, feed it to the monitor, and show me which features drift and whether the score distribution moves."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 5.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Given what drifted, what would you actually do? Retrain, adjust the threshold, or escalate to a human review of the typology? Argue for one."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 6 -->
+    <div class="block-section" id="block-6">
+      <div class="block-header">
+        <div class="block-number">6</div>
+        <h2 class="block-title">Put an agent on top</h2>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 6.1</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Create a semantic view in my schema over FACT_AML_ALERT, DIM_ACCOUNT_PROFILE and my model score table. Include synonyms a compliance analyst would actually use: alert, case, disposition, false positive, escalation, SAR."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 6.2</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Create a Cortex Search service over {{DATABASE}}.COINBASE_COMPLIANCE.CASE_NOTES so past investigator narratives are retrievable."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 6.3</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Create an agent in my schema called AML_TRIAGE_AGENT with three tools: Cortex Analyst over my semantic view, Cortex Search over the case notes, and a tool that calls the AML_ALERT_TRIAGE model to score or explain a specific account. Write instructions telling it to always cite the rule or feature evidence behind any risk statement, and never to assert that an account is engaged in money laundering, only that activity warrants review."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 6.4</span><span class="prompt-note">Ask your agent this</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Which accounts should we prioritise for review this week, why was each one flagged, and how have we handled similar cases in the past?"></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Prompt 6.5</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code dynamic-block" data-template="Now try to break it. Ask it something it should refuse, something outside the data, and something that tries to get it to state a conclusion the data does not support. Report what it did."></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- If You Get Stuck -->
+    <div class="block-section" id="troubleshooting">
+      <h2 class="sub-title">If you get stuck</h2>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">These prompts work in any situation where CoCo hits an error or you need more clarity:</p>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Error recovery</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code">That failed. Here is the error: &lt;paste it&gt;. Explain what went wrong in one paragraph, then fix it.</pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Review before running</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code">Before you run that, show me the SQL and tell me what it will change.</pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <div class="prompt-label"><span>Plain-language explanation</span></div>
+        <div class="prompt-code-wrap">
+          <pre class="prompt-code">I do not understand the previous step. Explain it as if I work in compliance and not in data science.</pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="block-section" id="checklist">
+      <h2 class="sub-title">What you should have at the end</h2>
+      <div class="checklist">
+        <h3>Deliverables</h3>
+        <ul>
+          <li>Two feature views with point-in-time correct lookups</li>
+          <li>A registered, versioned model with attached metrics</li>
+          <li>A scored alert table and a defensible before-and-after capacity comparison</li>
+          <li>SHAP explanations that read like case narrative, not like model output</li>
+          <li>A drift monitor</li>
+          <li>A working agent that ranks, explains and cites precedent</li>
+        </ul>
+        <p style="margin:12px 0 0;font-size:13px;color:var(--success-text);">All of it in your own schema, all of it built by prompting.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    (function() {
+      var whInput = document.getElementById('cfg-warehouse');
+      var dbInput = document.getElementById('cfg-database');
+      var schInput = document.getElementById('cfg-schema');
+
+      function getValues() {
+        return {
+          warehouse: whInput.value || 'COINBASE_WH',
+          database: dbInput.value || 'COINBASE_DB',
+          schema: schInput.value || 'MY_LAB'
+        };
+      }
+
+      function applyTemplate(template, vals) {
+        return template
+          .replace(/\{\{WAREHOUSE\}\}/g, vals.warehouse)
+          .replace(/\{\{DATABASE\}\}/g, vals.database)
+          .replace(/\{\{SCHEMA\}\}/g, vals.schema);
+      }
+
+      function updateAll() {
+        var vals = getValues();
+
+        var dynamicEls = document.querySelectorAll('.dynamic');
+        for (var i = 0; i < dynamicEls.length; i++) {
+          var el = dynamicEls[i];
+          var tpl = el.getAttribute('data-template');
+          if (tpl) {
+            el.textContent = applyTemplate(tpl, vals);
+          }
+        }
+
+        var blocks = document.querySelectorAll('.dynamic-block');
+        for (var j = 0; j < blocks.length; j++) {
+          var block = blocks[j];
+          var btpl = block.getAttribute('data-template');
+          if (btpl) {
+            block.textContent = applyTemplate(btpl, vals);
+          }
+        }
+      }
+
+      whInput.addEventListener('input', updateAll);
+      dbInput.addEventListener('input', updateAll);
+      schInput.addEventListener('input', updateAll);
+
+      updateAll();
+
+      /* Copy buttons */
+      var copyButtons = document.querySelectorAll('.copy-btn');
+      for (var k = 0; k < copyButtons.length; k++) {
+        (function(btn) {
+          btn.addEventListener('click', function() {
+            var codeEl = btn.parentElement.querySelector('.prompt-code');
+            if (!codeEl) return;
+            var text = codeEl.textContent;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function() {
+                showCopied(btn);
+              }, function() {
+                fallbackCopy(text, btn);
+              });
+            } else {
+              fallbackCopy(text, btn);
+            }
+          });
+        })(copyButtons[k]);
+      }
+
+      function fallbackCopy(text, btn) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showCopied(btn); } catch(e) { /* silent */ }
+        document.body.removeChild(ta);
+      }
+
+      function showCopied(btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = orig;
+          btn.classList.remove('copied');
+        }, 1500);
+      }
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="850" viewBox="0 0 1400 850" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<defs><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8FA3B4"/></marker></defs>
+<rect width="1400" height="850" fill="#FFFFFF"/>
+<text x="64" y="40" font-size="24" font-weight="700" fill="#0B3D5C">Compliance Lab: the ML lifecycle, end to end, in two hours</text>
+<text x="64" y="63" font-size="13" fill="#5A6B7B">Every box below is created live from a Cortex Code prompt. Synthetic data, standalone Snowflake account, one schema per attendee.</text>
+<circle cx="26" cy="107" r="11" fill="#11567F"/>
+<text x="26" y="111" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">1</text>
+<text x="30" y="148.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 148.0)">DATA</text>
+<rect x="64" y="96" width="200" height="64" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="164.0" y="116.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">DIM_ACCOUNT_PROFILE</text>
+<text x="164.0" y="133.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">KYC, jurisdiction,</text>
+<text x="164.0" y="148.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">declared volume</text>
+<rect x="289" y="96" width="200" height="64" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="389.0" y="116.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">FACT_MONITORED_TXN</text>
+<text x="389.0" y="133.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">transaction history,</text>
+<text x="389.0" y="148.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">counterparties</text>
+<rect x="514" y="96" width="200" height="64" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="614.0" y="116.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">DIM_AML_RULE</text>
+<text x="614.0" y="133.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">the rules engine</text>
+<text x="614.0" y="148.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">in production today</text>
+<rect x="739" y="96" width="200" height="64" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="839.0" y="116.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">FACT_AML_ALERT</text>
+<text x="839.0" y="133.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">labelled dispositions,</text>
+<text x="839.0" y="148.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">the training labels</text>
+<rect x="964" y="96" width="200" height="64" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="1064.0" y="116.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">CASE_NOTES</text>
+<text x="1064.0" y="133.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">investigator writeups,</text>
+<text x="1064.0" y="148.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">prior SAR narratives</text>
+<line x1="1180" y1="100" x2="1180" y2="156" stroke="#C0392B" stroke-width="2.4"/>
+<text x="1194" y="111.0" font-size="11" font-weight="700" fill="#C0392B">Pre-loaded before the lab.</text>
+<text x="1194" y="125.0" font-size="11" font-weight="700" fill="#C0392B">Imbalanced classes, noisy labels,</text>
+<text x="1194" y="139.0" font-size="11" font-weight="700" fill="#C0392B">and two typologies the rules</text>
+<text x="1194" y="153.0" font-size="11" font-weight="700" fill="#C0392B">cannot see by construction.</text>
+<circle cx="26" cy="211" r="11" fill="#11567F"/>
+<text x="26" y="215" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">2</text>
+<text x="30" y="254.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 254.0)">FEATURES</text>
+<rect x="64" y="200" width="350" height="68" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="239.0" y="222.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">FEATURE STORE</text>
+<text x="239.0" y="239.0" text-anchor="middle" font-size="11" fill="#5A6B7B">entity on CUSTOMER_ID</text>
+<text x="239.0" y="254.0" text-anchor="middle" font-size="11" fill="#5A6B7B">registered once, reused everywhere</text>
+<rect x="439" y="200" width="350" height="68" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="614.0" y="222.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">BEHAVIOURAL FEATURE VIEW</text>
+<text x="614.0" y="239.0" text-anchor="middle" font-size="11" fill="#5A6B7B">structuring, layering, mule-ring</text>
+<text x="614.0" y="254.0" text-anchor="middle" font-size="11" fill="#5A6B7B">and wash-trading signals</text>
+<rect x="814" y="200" width="350" height="68" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="989.0" y="222.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">TRAINING SPINE</text>
+<text x="989.0" y="239.0" text-anchor="middle" font-size="11" fill="#5A6B7B">one row per alert, keyed on</text>
+<text x="989.0" y="254.0" text-anchor="middle" font-size="11" fill="#5A6B7B">(CUSTOMER_ID, ALERT_DATE)</text>
+<line x1="164.0" y1="160" x2="164.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="389.0" y1="160" x2="389.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="614.0" y1="160" x2="614.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="839.0" y1="160" x2="839.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="1064.0" y1="160" x2="1064.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="164.0" y1="180" x2="1064.0" y2="180" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="239.0" y1="180" x2="239.0" y2="200" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="614.0" y1="180" x2="614.0" y2="200" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="989.0" y1="180" x2="989.0" y2="200" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="1180" y1="204" x2="1180" y2="264" stroke="#11567F" stroke-width="2.4"/>
+<text x="1194" y="224.0" font-size="11" font-weight="700" fill="#11567F">Features computed as of the</text>
+<text x="1194" y="238.0" font-size="11" font-weight="700" fill="#11567F">alert date, not as of today.</text>
+<text x="1194" y="252.0" font-size="11" font-weight="700" fill="#11567F">This is what stops leakage.</text>
+<circle cx="26" cy="319" r="11" fill="#11567F"/>
+<text x="26" y="323" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">3</text>
+<text x="30" y="360.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 360.0)">TRAIN</text>
+<rect x="64" y="308" width="350" height="64" rx="8" fill="#E3F2FC" stroke="#9CD3EE" stroke-width="1.6"/>
+<text x="239.0" y="337.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">ML JOB on COMPLIANCE_LAB_POOL</text>
+<text x="239.0" y="355.0" text-anchor="middle" font-size="11" fill="#5A6B7B">XGBoost, container runtime</text>
+<rect x="439" y="308" width="350" height="64" rx="8" fill="#E3F2FC" stroke="#9CD3EE" stroke-width="1.6"/>
+<text x="614.0" y="337.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">HYPERPARAMETER SWEEP</text>
+<text x="614.0" y="355.0" text-anchor="middle" font-size="11" fill="#5A6B7B">8 to 12 trials</text>
+<rect x="814" y="308" width="350" height="64" rx="8" fill="#E3F2FC" stroke="#9CD3EE" stroke-width="1.6"/>
+<text x="989.0" y="337.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">MODEL REGISTRY</text>
+<text x="989.0" y="355.0" text-anchor="middle" font-size="11" fill="#5A6B7B">versioned, with metrics and lineage</text>
+<line x1="239.0" y1="268" x2="239.0" y2="308" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="614.0" y1="268" x2="614.0" y2="308" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="989.0" y1="268" x2="989.0" y2="308" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="414" y1="340.0" x2="439" y2="340.0" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="789" y1="340.0" x2="814" y2="340.0" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="1180" y1="312" x2="1180" y2="368" stroke="#11567F" stroke-width="2.4"/>
+<text x="1194" y="330.0" font-size="11" font-weight="700" fill="#11567F">No cluster provisioned.</text>
+<text x="1194" y="344.0" font-size="11" font-weight="700" fill="#11567F">No environment configured.</text>
+<text x="1194" y="358.0" font-size="11" font-weight="700" fill="#11567F">Data never leaves Snowflake.</text>
+<circle cx="26" cy="423" r="11" fill="#11567F"/>
+<text x="26" y="427" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">4</text>
+<text x="30" y="464.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 464.0)">SCORE</text>
+<rect x="64" y="412" width="350" height="64" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="239.0" y="441.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">BATCH INFERENCE</text>
+<text x="239.0" y="459.0" text-anchor="middle" font-size="11" fill="#5A6B7B">scored alert queue, ranked by risk</text>
+<rect x="439" y="412" width="350" height="64" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="614.0" y="441.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">SHAP EXPLANATIONS</text>
+<text x="614.0" y="459.0" text-anchor="middle" font-size="11" fill="#5A6B7B">per-alert reasons, not just a score</text>
+<rect x="814" y="412" width="350" height="64" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="989.0" y="441.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">MODEL MONITOR</text>
+<text x="989.0" y="459.0" text-anchor="middle" font-size="11" fill="#5A6B7B">drift detection on live scores</text>
+<line x1="239.0" y1="372" x2="239.0" y2="412" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="614.0" y1="372" x2="614.0" y2="412" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="989.0" y1="372" x2="989.0" y2="412" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="1180" y1="416" x2="1180" y2="472" stroke="#C0392B" stroke-width="2.4"/>
+<text x="1194" y="434.0" font-size="11" font-weight="700" fill="#C0392B">Compared at fixed review</text>
+<text x="1194" y="448.0" font-size="11" font-weight="700" fill="#C0392B">capacity, against the</text>
+<text x="1194" y="462.0" font-size="11" font-weight="700" fill="#C0392B">rules engine baseline.</text>
+<circle cx="26" cy="527" r="11" fill="#11567F"/>
+<text x="26" y="531" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">5</text>
+<text x="30" y="565.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 565.0)">TOOLS</text>
+<rect x="64" y="516" width="350" height="58" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="239.0" y="542.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">Model scoring tool</text>
+<text x="239.0" y="560.0" text-anchor="middle" font-size="11" fill="#5A6B7B">custom SQL tool over the registry</text>
+<rect x="439" y="516" width="350" height="58" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="614.0" y="542.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">Cortex Analyst</text>
+<text x="614.0" y="560.0" text-anchor="middle" font-size="11" fill="#5A6B7B">NL to SQL over the semantic view</text>
+<rect x="814" y="516" width="350" height="58" rx="8" fill="#EAF6FD" stroke="#B9DFF3" stroke-width="1.6"/>
+<text x="989.0" y="542.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1B2733">Cortex Search</text>
+<text x="989.0" y="560.0" text-anchor="middle" font-size="11" fill="#5A6B7B">precedent from CASE_NOTES</text>
+<line x1="239.0" y1="476" x2="239.0" y2="516" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="614.0" y1="476" x2="614.0" y2="516" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<line x1="989.0" y1="476" x2="989.0" y2="516" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<circle cx="26" cy="627" r="11" fill="#11567F"/>
+<text x="26" y="631" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">6</text>
+<text x="30" y="672.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#11567F" letter-spacing="0.8" transform="rotate(-90 30 672.0)">DELIVER</text>
+<line x1="239.0" y1="574" x2="239.0" y2="596" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="614.0" y1="574" x2="614.0" y2="596" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="989.0" y1="574" x2="989.0" y2="596" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="239.0" y1="596" x2="989.0" y2="596" stroke="#8FA3B4" stroke-width="1.8"/>
+<line x1="444" y1="596" x2="444" y2="616" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<rect x="164" y="616" width="560" height="72" rx="8" fill="#E7F0F7" stroke="#9CC3DC" stroke-width="1.6"/>
+<text x="444.0" y="649.0" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2733">CORTEX AGENT   COMPLIANCE_TRIAGE_AGENT</text>
+<text x="444.0" y="667.0" text-anchor="middle" font-size="12" fill="#5A6B7B">ranks the queue, explains each flag, retrieves how similar cases were handled</text>
+<rect x="790" y="616" width="374" height="72" rx="8" fill="#F2F7FB" stroke="#D3E2EE" stroke-width="1.6"/>
+<text x="977.0" y="640.0" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2733">Snowflake Intelligence</text>
+<text x="977.0" y="657.0" text-anchor="middle" font-size="11" fill="#5A6B7B">investigators ask in plain English</text>
+<text x="977.0" y="672.0" text-anchor="middle" font-size="11" fill="#5A6B7B">plus a pre-built app, shown not built</text>
+<line x1="724" y1="652.0" x2="790" y2="652.0" stroke="#8FA3B4" stroke-width="1.8" marker-end="url(#arw)"/>
+<rect x="64" y="712" width="1320" height="112" rx="10" fill="#FFF8EC" stroke="#E8A33D" stroke-width="1.8" stroke-dasharray="7 5"/>
+<text x="82" y="737" font-size="14" font-weight="700" fill="#8A5A10">GOVERNANCE: demonstrated in this lab, built in full in the IR lab</text>
+<rect x="82" y="754" width="300" height="50" rx="8" fill="#FFFFFF" stroke="#E8C48D" stroke-width="1.6"/>
+<text x="232.0" y="776.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B2733">CUSTOMER_NAME_MASK</text>
+<text x="232.0" y="794.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">column masking policy</text>
+<rect x="410" y="754" width="300" height="50" rx="8" fill="#FFFFFF" stroke="#E8C48D" stroke-width="1.6"/>
+<text x="560.0" y="776.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B2733">Jurisdiction row access</text>
+<text x="560.0" y="794.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">EU cases hidden from US role</text>
+<rect x="738" y="754" width="300" height="50" rx="8" fill="#FFFFFF" stroke="#E8C48D" stroke-width="1.6"/>
+<text x="888.0" y="776.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B2733">Injection attempt</text>
+<text x="888.0" y="794.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">one live test against the agent</text>
+<rect x="1066" y="754" width="300" height="50" rx="8" fill="#FFFFFF" stroke="#E8C48D" stroke-width="1.6"/>
+<text x="1216.0" y="776.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B2733">Answer key withheld</text>
+<text x="1216.0" y="794.0" text-anchor="middle" font-size="10.5" fill="#5A6B7B">ACCOUNT_TYPOLOGY_TRUTH ungranted</text>
+</svg>
