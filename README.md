@@ -21,6 +21,15 @@ Attendee-facing content for the Coinbase AI/ML workshop series, deployed as a Sn
 | `controls_monitoring/prompts.md` | Plain-text reference of the prompt cards. |
 | `controls_monitoring/lab_architecture.svg` | Architecture diagram. |
 
+## Marketing Intelligence Lab
+
+| File | Description |
+|------|-------------|
+| `marketing/marketing_lab_walkthrough.html` | Interactive lab walkthrough with 29 prompts across 7 blocks. Config bar at top. |
+| `marketing/marketing_lab_intro_slides.html` | Facilitator intro slide deck. |
+| `marketing/prompts.md` | Plain-text reference of the prompt cards. |
+| `marketing/lab_architecture.svg` | Architecture diagram. |
+
 ## Usage
 
 Open the walkthrough HTML for your lab from the workspace in Snowsight (Projects > Workspaces > coinbase-compliance-lab-content). Open it in a browser tab alongside Cortex Code.
