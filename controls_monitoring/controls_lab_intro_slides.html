@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Controls Monitoring — Lab Intro</title>
+<style>
+:root{--cb-blue:#0052FF;--cb-dark:#050F1A;--cb-success:#00D395;--cb-warn:#F5A623;--cb-danger:#FF3B30;--cb-gray:#8A919E;--cb-bg:#F8F9FB;--cb-card:#FFFFFF;--cb-purple:#A855F7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,-apple-system,sans-serif;background:var(--cb-dark);color:#fff;overflow:hidden}
+.slide{display:none;width:100vw;height:100vh;padding:60px 80px;flex-direction:column;justify-content:center}
+.slide.active{display:flex}
+.title{font-size:44px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cb-blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;line-height:1.15}
+.subtitle{font-size:22px;color:var(--cb-gray);margin-bottom:30px}
+h2{font-size:30px;color:#fff;margin-bottom:20px}
+h3{font-size:20px;color:var(--cb-blue);margin-bottom:12px}
+p{font-size:16px;line-height:1.6;color:#ccc;max-width:900px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.chip{background:rgba(0,82,255,.15);color:var(--cb-blue);padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(0,82,255,.3)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:20px}
+.card h3{margin-bottom:6px;font-size:16px}
+.card p{font-size:13px;color:var(--cb-gray)}
+.card.highlight{border-color:var(--cb-blue);background:rgba(0,82,255,.08)}
+table.grid{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+table.grid th{text-align:left;padding:10px 12px;background:rgba(0,82,255,.12);color:var(--cb-blue);font-weight:600;border-bottom:1px solid rgba(255,255,255,.1)}
+table.grid td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);color:#ddd}
+table.grid tr:hover td{background:rgba(255,255,255,.04)}
+.stat-row{display:flex;gap:24px;margin:20px 0}
+.stat{text-align:center;flex:1}
+.stat .num{font-size:36px;font-weight:800;color:var(--cb-blue)}
+.stat .label{font-size:12px;color:var(--cb-gray);margin-top:4px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:16px}
+pre{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:16px;font-size:12px;line-height:1.5;overflow-x:auto;color:#ddd;font-family:'SF Mono',Menlo,monospace}
+.kw{color:var(--cb-blue)}.str{color:var(--cb-success)}.fn{color:var(--cb-warn)}.cm{color:var(--cb-gray)}.num{color:var(--cb-purple)}
+.flow-row{display:flex;gap:12px;align-items:center;margin:8px 0}
+.flow-box{background:rgba(0,82,255,.1);border:1px solid rgba(0,82,255,.3);border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;color:var(--cb-blue)}
+.flow-arrow{color:var(--cb-gray);font-size:18px}
+.pullquote{border-left:3px solid var(--cb-blue);padding:12px 20px;margin:20px 0;font-style:italic;color:#bbb;font-size:15px}
+.agenda-item{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.agenda-time{font-size:14px;font-weight:700;color:var(--cb-blue);min-width:60px}
+.agenda-title{font-size:15px;font-weight:600;color:#fff}
+.agenda-desc{font-size:13px;color:var(--cb-gray)}
+#bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
+#bar .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:.2s}
+#bar .dot.on{background:var(--cb-blue)}
+.slide-num{position:fixed;bottom:22px;right:30px;font-size:12px;color:var(--cb-gray);z-index:10}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide">
+  <div class="title">Build an AI-powered<br>controls monitoring system</div>
+  <div class="subtitle">Build with Cortex AI. Use with Cortex AI. Govern with Cortex AI.</div>
+  <div class="chips">
+    <span class="chip">AI_CLASSIFY</span>
+    <span class="chip">AI_EXTRACT</span>
+    <span class="chip">AI_COMPLETE</span>
+    <span class="chip">Cortex Analyst</span>
+    <span class="chip">Cortex Search</span>
+    <span class="chip">Cortex Agent</span>
+    <span class="chip">AI Guardrails</span>
+    <span class="chip">Streamlit</span>
+  </div>
+</div>
+
+<!-- SLIDE 2: Why this session -->
+<div class="slide">
+  <h2>Why this session</h2>
+  <div class="two-col">
+    <div>
+      <h3>Current state</h3>
+      <p>Anecdotes detects violations across 25 applications on a weekly cadence. Results stay inside Anecdotes. Auditors pull reports from there. Remediation is manual — someone spots a violation, creates a Jira ticket.</p>
+      <h3 style="margin-top:20px">The gap (now closed)</h3>
+      <p>Anecdotes violation data was not flowing into Snowflake. As of August 2026, the data share is configured and RBAC grants are in place.</p>
+    </div>
+    <div>
+      <h3>What we build today</h3>
+      <p>A compliance monitoring app built on Cortex AI end-to-end: AI functions enrich violations at ingest, Cortex Analyst makes them queryable in plain English, Cortex Search puts runbooks at your fingertips, a Cortex Agent ties it all together, and guardrails govern what goes in and what comes out.</p>
+      <div class="pullquote">Cortex AI isn't a feature we bolt on — it's how we build the app and how Jordyn uses it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: Workflow comparison -->
+<div class="slide">
+  <h2>Controls monitoring — today vs. what we build</h2>
+  <table class="grid">
+    <tr><th>Workflow</th><th>Today (Anecdotes only)</th><th>What we build</th></tr>
+    <tr><td>Violation detection</td><td>Weekly scan, results in Anecdotes UI</td><td>Data share → Snowflake, queryable + enriched</td></tr>
+    <tr><td>Risk classification</td><td>Manual categorization</td><td>AI_CLASSIFY auto-categorizes by risk type</td></tr>
+    <tr><td>Investigation</td><td>Click through Anecdotes UI</td><td>Natural language: "show critical violations in Okta"</td></tr>
+    <tr><td>Remediation guidance</td><td>Ask colleagues, search wikis</td><td>Agent searches runbook knowledge base</td></tr>
+    <tr><td>Audit reporting</td><td>Export from Anecdotes</td><td>Live dashboard + semantic view for auditors</td></tr>
+    <tr><td>Data governance</td><td>Manual access controls</td><td>AI guardrails: masking, row access, prompt moderation</td></tr>
+  </table>
+</div>
+
+<!-- SLIDE 4: Component overview -->
+<div class="slide">
+  <h2>Snowflake Cortex AI — building blocks</h2>
+  <div class="cards">
+    <div class="card"><h3>AI_CLASSIFY</h3><p>Categorize violations into risk types: Data Exposure, Access Control, Configuration Drift, Policy Non-Compliance, Operational Gap.</p></div>
+    <div class="card"><h3>AI_EXTRACT</h3><p>Pull structured entities from violation descriptions: affected systems, users, roles, protocols, compliance frameworks.</p></div>
+    <div class="card"><h3>AI_COMPLETE</h3><p>Generate one-line actionable summaries from verbose violation descriptions. Turns paragraphs into action items.</p></div>
+    <div class="card highlight"><h3>Cortex Analyst</h3><p>Semantic view turns natural language into SQL. "How many critical violations are overdue?" → instant answer.</p></div>
+    <div class="card highlight"><h3>Cortex Search</h3><p>25 remediation runbooks indexed and searchable. "How do I fix an MFA violation?" → step-by-step guide.</p></div>
+    <div class="card highlight"><h3>Cortex Agent</h3><p>Combines data queries + runbook search in one chat interface. Compound questions like "show violations and how to fix them."</p></div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Architecture -->
+<div class="slide">
+  <h2>Architecture — 5 layers</h2>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+    <div class="flow-row">
+      <span style="color:var(--cb-blue);font-weight:700;min-width:24px">1</span>
+      <span class="flow-box">Frameworks (8)</span>
+      <span class="flow-box">Controls (60)</span>
+      <span class="flow-box">Integrations (25)</span>
+      <span class="flow-box">Violations (2K)</span>
+      <span class="flow-box">Remediation (1.8K)</span>
+      <span class="flow-box">Runbooks (25)</span>
+    </div>
+    <div style="text-align:center;color:var(--cb-gray)">↓</div>
+    <div class="flow-row">
+      <span style="color:var(--cb-blue);font-weight:700;min-width:24px">2</span>
+      <span class="flow-box">AI_CLASSIFY → Risk Category</span>
+      <span class="flow-box">AI_EXTRACT → Systems, Users</span>
+      <span class="flow-box">AI_COMPLETE → Summaries</span>
+    </div>
+    <div style="text-align:center;color:var(--cb-gray)">↓</div>
+    <div class="flow-row">
+      <span style="color:var(--cb-blue);font-weight:700;min-width:24px">3</span>
+      <span class="flow-box">Semantic View: CONTROLS_MONITORING_SV</span>
+      <span class="flow-box">Cortex Search: COMPLIANCE_RUNBOOK_SEARCH</span>
+    </div>
+    <div style="text-align:center;color:var(--cb-gray)">↓</div>
+    <div class="flow-row">
+      <span style="color:var(--cb-blue);font-weight:700;min-width:24px">4</span>
+      <span class="flow-box" style="flex:1;text-align:center">CONTROLS_MONITORING_AGENT (query data + search runbooks)</span>
+    </div>
+    <div style="text-align:center;color:var(--cb-gray)">↓</div>
+    <div class="flow-row">
+      <span style="color:var(--cb-blue);font-weight:700;min-width:24px">5</span>
+      <span class="flow-box">Snowflake Intelligence</span>
+      <span class="flow-box">Streamlit Dashboard (4 tabs)</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Data model -->
+<div class="slide">
+  <h2>Data model</h2>
+  <div class="stat-row">
+    <div class="stat"><div class="num">8</div><div class="label">Frameworks</div></div>
+    <div class="stat"><div class="num">60</div><div class="label">Controls</div></div>
+    <div class="stat"><div class="num">25</div><div class="label">Integrations</div></div>
+    <div class="stat"><div class="num">2,000</div><div class="label">Violations</div></div>
+    <div class="stat"><div class="num">1,779</div><div class="label">Jira Tickets</div></div>
+    <div class="stat"><div class="num">25</div><div class="label">Runbooks</div></div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>COINBASE_CONTROLS (7 tables)</h3>
+      <table class="grid">
+        <tr><th>Table</th><th>Grain</th></tr>
+        <tr><td>COMPLIANCE_FRAMEWORKS</td><td>1 row per framework</td></tr>
+        <tr><td>CONTROLS</td><td>1 row per control</td></tr>
+        <tr><td>INTEGRATIONS</td><td>1 row per application</td></tr>
+        <tr><td>VIOLATIONS</td><td>1 row per violation (fact)</td></tr>
+        <tr><td>VIOLATION_ENRICHMENT</td><td>1 row per violation (AI)</td></tr>
+        <tr><td>REMEDIATION_ACTIONS</td><td>1 row per Jira ticket</td></tr>
+        <tr><td>COMPLIANCE_RUNBOOKS</td><td>1 row per runbook</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Control Categories</h3>
+      <table class="grid">
+        <tr><th>Category</th><th>Controls</th><th>Example</th></tr>
+        <tr><td>Access Management</td><td>10</td><td>MFA, Privileged Access</td></tr>
+        <tr><td>Data Protection</td><td>10</td><td>Encryption, PII Tags</td></tr>
+        <tr><td>Change Management</td><td>10</td><td>Code Review, SoD</td></tr>
+        <tr><td>Incident Response</td><td>10</td><td>Detection SLA, Post-Mortem</td></tr>
+        <tr><td>Business Continuity</td><td>10</td><td>DR Testing, Redundancy</td></tr>
+        <tr><td>Identity &amp; Auth</td><td>10</td><td>SSO, Hardware Token</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: AI enrichment -->
+<div class="slide">
+  <h2>AI enrichment — 3 functions</h2>
+  <div class="cards" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="card">
+      <h3>AI_CLASSIFY</h3>
+      <pre><span class="fn">AI_CLASSIFY</span>(
+  v.DESCRIPTION,
+  <span class="fn">ARRAY_CONSTRUCT</span>(
+    <span class="str">'Data Exposure'</span>,
+    <span class="str">'Access Control'</span>,
+    <span class="str">'Config Drift'</span>,
+    <span class="str">'Policy Non-Compliance'</span>,
+    <span class="str">'Operational Gap'</span>
+  )
+):<span class="str">"label"</span>::TEXT</pre>
+    </div>
+    <div class="card">
+      <h3>AI_EXTRACT</h3>
+      <pre><span class="fn">AI_EXTRACT</span>(
+  v.DESCRIPTION,
+  <span class="fn">ARRAY_CONSTRUCT</span>(
+    <span class="fn">OBJECT_CONSTRUCT</span>(
+      <span class="str">'name'</span>, <span class="str">'systems'</span>,
+      <span class="str">'description'</span>,
+      <span class="str">'Applications mentioned'</span>
+    ),
+    <span class="fn">OBJECT_CONSTRUCT</span>(
+      <span class="str">'name'</span>, <span class="str">'users'</span>,
+      <span class="str">'description'</span>,
+      <span class="str">'Usernames mentioned'</span>
+    )
+  )
+)</pre>
+    </div>
+    <div class="card">
+      <h3>AI_COMPLETE (summarize)</h3>
+      <pre><span class="fn">SNOWFLAKE.CORTEX.COMPLETE</span>(
+  <span class="str">'mistral-large2'</span>,
+  <span class="str">'Summarize this violation</span>
+  <span class="str"> in one concise sentence</span>
+  <span class="str"> (max 20 words): '</span>
+  || v.DESCRIPTION
+)</pre>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Semantic view -->
+<div class="slide">
+  <h2>Semantic view — CONTROLS_MONITORING_SV</h2>
+  <div class="two-col">
+    <div>
+      <h3>6 Entities</h3>
+      <table class="grid">
+        <tr><th>Entity</th><th>Role</th></tr>
+        <tr><td>VIOLATIONS</td><td>Core fact: severity, status, timestamps, SLA metrics</td></tr>
+        <tr><td>CONTROLS</td><td>60 controls with category, code, severity weight</td></tr>
+        <tr><td>INTEGRATIONS</td><td>25 apps with category and vendor</td></tr>
+        <tr><td>COMPLIANCE_FRAMEWORKS</td><td>8 frameworks (SOX, SOC2, PCI, ...)</td></tr>
+        <tr><td>VIOLATION_ENRICHMENT</td><td>AI risk category + one-line summary</td></tr>
+        <tr><td>REMEDIATION_ACTIONS</td><td>Jira tickets, priority, SLA due dates</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>7 Verified Queries</h3>
+      <ul style="font-size:14px;color:#ccc;line-height:2">
+        <li>Open violations by severity</li>
+        <li>Which apps have the most open violations</li>
+        <li>Average time to remediate</li>
+        <li>All critical violations still open</li>
+        <li>Compliance posture by framework</li>
+        <li>Controls with the most violations</li>
+        <li>Violations overdue past SLA</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Agent + Search -->
+<div class="slide">
+  <h2>Compliance Agent — two tools</h2>
+  <div class="two-col">
+    <div>
+      <h3>Tool 1: query_compliance_data</h3>
+      <p style="font-size:13px">Cortex Analyst → CONTROLS_MONITORING_SV</p>
+      <div class="flow-row" style="margin-top:12px">
+        <span class="flow-box">User question</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box">SQL generation</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box">Data result</span>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:var(--cb-gray)">Example: "Which apps have the most critical violations?"</p>
+    </div>
+    <div>
+      <h3>Tool 2: search_runbooks</h3>
+      <p style="font-size:13px">Cortex Search → COMPLIANCE_RUNBOOK_SEARCH</p>
+      <div class="flow-row" style="margin-top:12px">
+        <span class="flow-box">User question</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box">Semantic search</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box">Runbook steps</span>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:var(--cb-gray)">Example: "How do I fix an MFA violation?"</p>
+    </div>
+  </div>
+  <div style="margin-top:24px">
+    <h3>Compound questions use both tools</h3>
+    <p style="font-size:14px">"Show me critical violations in Okta and how to fix them" → queries data + searches runbooks</p>
+  </div>
+</div>
+
+<!-- SLIDE 10: Streamlit app -->
+<div class="slide">
+  <h2>Streamlit dashboard — 4 tabs</h2>
+  <div class="cards" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card">
+      <h3>Compliance Posture</h3>
+      <p>KPIs (total, open, overdue, critical). Violations by severity, framework, category. Critical open violation list.</p>
+    </div>
+    <div class="card">
+      <h3>Violation Trends</h3>
+      <p>New violations over time. Resolved trend. MTTR by severity. Assignee workload distribution.</p>
+    </div>
+    <div class="card">
+      <h3>Integration Health</h3>
+      <p>Per-app violation counts. Worst offending applications. Category breakdown and MTTR per integration.</p>
+    </div>
+    <div class="card highlight">
+      <h3>Compliance Agent</h3>
+      <p>Natural language chat. Suggested prompts. Queries data + searches runbooks in one interface.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Guardrails -->
+<div class="slide">
+  <h2>AI Guardrails — govern the app you build</h2>
+  <div class="two-col">
+    <div>
+      <h3>Data guardrails (Snowflake native)</h3>
+      <table class="grid">
+        <tr><th>Guardrail</th><th>What it does</th></tr>
+        <tr><td>Masking policy</td><td>Assignee usernames redacted for auditor role</td></tr>
+        <tr><td>Masking policy</td><td>Resolution notes hidden from non-admin roles</td></tr>
+        <tr><td>Row access policy</td><td>Auditors see only CRITICAL/HIGH violations</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--cb-gray);margin-top:12px">These apply to both direct SQL and Cortex Analyst queries — the semantic view inherits the policies.</p>
+    </div>
+    <div>
+      <h3>Prompt guardrails (Cortex AI)</h3>
+      <table class="grid">
+        <tr><th>Check</th><th>How</th></tr>
+        <tr><td>Prompt injection</td><td>AI_CLASSIFY blocks jailbreak attempts</td></tr>
+        <tr><td>Scope enforcement</td><td>AI_COMPLETE scope gate rejects off-topic questions</td></tr>
+        <tr><td>Legal opinion block</td><td>"Are we SOX compliant?" → blocked with explanation</td></tr>
+        <tr><td>PII exfiltration</td><td>"List employee home addresses" → blocked</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--cb-gray);margin-top:12px">The same Cortex AI functions we use to build the app also govern it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: Agenda -->
+<div class="slide">
+  <h2>Agenda — 90 minutes</h2>
+  <div class="agenda-item"><span class="agenda-time">0:00</span><div><div class="agenda-title">Intro & Context</div><div class="agenda-desc">Anecdotes → Snowflake pipeline, what we're building today</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">0:10</span><div><div class="agenda-title">Block 1: Explore Violation Data</div><div class="agenda-desc">Query frameworks, controls, integrations, violations</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">0:25</span><div><div class="agenda-title">Block 2: AI Enrichment</div><div class="agenda-desc">AI_CLASSIFY risk categories, AI_EXTRACT entities, AI_COMPLETE summaries</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">0:45</span><div><div class="agenda-title">Block 3: Self-Serve Analytics</div><div class="agenda-desc">Semantic view + Snowflake Intelligence demo</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">1:00</span><div><div class="agenda-title">Block 4: Compliance Agent</div><div class="agenda-desc">Chat with agent — data queries + runbook search</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">1:10</span><div><div class="agenda-title">Block 5: Dashboard Walkthrough</div><div class="agenda-desc">Streamlit compliance dashboard — 4 tabs</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">1:20</span><div><div class="agenda-title">Block 6: AI Guardrails</div><div class="agenda-desc">Data masking, row access policies, prompt moderation with AI_CLASSIFY</div></div></div>
+  <div class="agenda-item"><span class="agenda-time">1:30</span><div><div class="agenda-title">Wrap-Up & Production Path</div><div class="agenda-desc">Alerting, Jira integration, scheduled enrichment, RBAC</div></div></div>
+</div>
+
+<!-- SLIDE 13: Before we start -->
+<div class="slide">
+  <h2>Before we start</h2>
+  <div style="font-size:16px;line-height:2.2;color:#ccc;margin-top:16px">
+    <p>1. This workshop uses <strong style="color:#fff">synthetic violation data</strong> — realistic patterns modeled on Anecdotes output, but no real compliance data.</p>
+    <p>2. The <strong style="color:#fff">Anecdotes data share is live</strong> (Aug 2026) — once we're comfortable, we can point everything at real data.</p>
+    <p>3. <strong style="color:#fff">Strongest hook for Jordyn:</strong> the agent combining violation queries with remediation runbooks. "Show me critical violations and how to fix them" in one question.</p>
+    <p>4. <strong style="color:#fff">SLA thresholds</strong> used throughout: CRITICAL = 3 days, HIGH = 14 days, MEDIUM = 30 days, LOW = 60 days.</p>
+    <p>5. <strong style="color:#fff">Cortex AI theme:</strong> every workshop in this series uses Cortex AI both to build the app and to let users interact with it. This one is no different — AI functions, Analyst, Search, Agent, guardrails.</p>
+    <p>6. <strong style="color:#fff">Everything is live</strong> — data is in Snowflake, semantic view and agent are deployed, Streamlit app is ready. Let's go.</p>
+  </div>
+</div>
+
+<div id="bar"></div>
+<div class="slide-num"></div>
+
+<script>
+const S=document.querySelectorAll('.slide'),bar=document.getElementById('bar'),sn=document.querySelector('.slide-num');
+let c=0;
+S.forEach((_,i)=>{const d=document.createElement('span');d.className='dot';d.onclick=()=>go(i);bar.appendChild(d)});
+function go(n){n=Math.max(0,Math.min(n,S.length-1));S[c].classList.remove('active');c=n;S[c].classList.add('active');bar.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===c));sn.textContent=(c+1)+' / '+S.length}
+go(0);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')go(c+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(c-1);if(e.key==='Home')go(0);if(e.key==='End')go(S.length-1)});
+document.addEventListener('click',e=>{if(e.target.closest('#bar'))return;e.clientX<window.innerWidth*.25?go(c-1):go(c+1)});
+</script>
+</body>
+</html>

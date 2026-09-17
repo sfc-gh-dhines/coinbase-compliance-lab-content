@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" font-family="Inter, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0052FF"/>
+    </marker>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EEF0F4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bgGrad)" rx="12"/>
+  <text x="600" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#050F1A">Controls Monitoring — Architecture</text>
+
+  <!-- Layer 1: Data Foundation -->
+  <rect x="40" y="60" width="1120" height="100" rx="8" fill="#FFFFFF" stroke="#0052FF" stroke-width="1.5"/>
+  <circle cx="70" cy="110" r="16" fill="#0052FF"/><text x="70" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="#FFF">1</text>
+  <text x="100" y="82" font-size="11" font-weight="600" fill="#0052FF">DATA FOUNDATION</text>
+
+  <rect x="100" y="92" width="160" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="180" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">COMPLIANCE_FRAMEWORKS</text>
+  <text x="180" y="126" text-anchor="middle" font-size="9" fill="#8A919E">8 frameworks</text>
+  <text x="180" y="138" text-anchor="middle" font-size="9" fill="#8A919E">SOX · SOC2 · PCI · GDPR</text>
+
+  <rect x="280" y="92" width="160" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="360" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">CONTROLS</text>
+  <text x="360" y="126" text-anchor="middle" font-size="9" fill="#8A919E">60 controls · 6 categories</text>
+  <text x="360" y="138" text-anchor="middle" font-size="9" fill="#8A919E">AC · DP · CM · IR · BC · IA</text>
+
+  <rect x="460" y="92" width="160" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="540" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">INTEGRATIONS</text>
+  <text x="540" y="126" text-anchor="middle" font-size="9" fill="#8A919E">25 applications</text>
+  <text x="540" y="138" text-anchor="middle" font-size="9" fill="#8A919E">Okta · AWS · GitHub · SF</text>
+
+  <rect x="640" y="92" width="160" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="720" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">VIOLATIONS</text>
+  <text x="720" y="126" text-anchor="middle" font-size="9" fill="#8A919E">2,000 violations</text>
+  <text x="720" y="138" text-anchor="middle" font-size="9" fill="#8A919E">Core fact table</text>
+
+  <rect x="820" y="92" width="160" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="900" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">REMEDIATION_ACTIONS</text>
+  <text x="900" y="126" text-anchor="middle" font-size="9" fill="#8A919E">1,779 Jira tickets</text>
+  <text x="900" y="138" text-anchor="middle" font-size="9" fill="#8A919E">P1-P4 priority</text>
+
+  <rect x="1000" y="92" width="145" height="54" rx="6" fill="#F0F5FF" stroke="#0052FF" stroke-width="1"/>
+  <text x="1072" y="112" text-anchor="middle" font-size="10" font-weight="600" fill="#050F1A">RUNBOOKS</text>
+  <text x="1072" y="126" text-anchor="middle" font-size="9" fill="#8A919E">25 runbooks</text>
+  <text x="1072" y="138" text-anchor="middle" font-size="9" fill="#8A919E">Remediation guides</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="600" y1="160" x2="600" y2="190" stroke="#0052FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2: AI Enrichment -->
+  <rect x="40" y="195" width="1120" height="90" rx="8" fill="#FFFFFF" stroke="#0052FF" stroke-width="1.5"/>
+  <circle cx="70" cy="240" r="16" fill="#0052FF"/><text x="70" y="245" text-anchor="middle" font-size="12" font-weight="700" fill="#FFF">2</text>
+  <text x="100" y="216" font-size="11" font-weight="600" fill="#0052FF">AI ENRICHMENT</text>
+
+  <rect x="140" y="226" width="260" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="270" y="244" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">AI_CLASSIFY</text>
+  <text x="270" y="260" text-anchor="middle" font-size="9" fill="#8A919E">Risk category: Data Exposure, Access Control, Config Drift, ...</text>
+
+  <rect x="420" y="226" width="260" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="550" y="244" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">AI_EXTRACT</text>
+  <text x="550" y="260" text-anchor="middle" font-size="9" fill="#8A919E">Affected systems, users, frameworks, protocols</text>
+
+  <rect x="700" y="226" width="260" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="830" y="244" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">AI_COMPLETE (summarize)</text>
+  <text x="830" y="260" text-anchor="middle" font-size="9" fill="#8A919E">One-line actionable summaries per violation</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="600" y1="285" x2="600" y2="315" stroke="#0052FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3: Self-Serve Analytics -->
+  <rect x="40" y="320" width="1120" height="90" rx="8" fill="#FFFFFF" stroke="#0052FF" stroke-width="1.5"/>
+  <circle cx="70" cy="365" r="16" fill="#0052FF"/><text x="70" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#FFF">3</text>
+  <text x="100" y="341" font-size="11" font-weight="600" fill="#0052FF">SELF-SERVE ANALYTICS</text>
+
+  <rect x="140" y="351" width="420" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="350" y="369" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">Semantic View: CONTROLS_MONITORING_SV</text>
+  <text x="350" y="385" text-anchor="middle" font-size="9" fill="#8A919E">6 entities · 7 verified queries · Violations + Controls + Frameworks + Integrations + Enrichment + Remediation</text>
+
+  <rect x="600" y="351" width="420" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="810" y="369" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">Cortex Search: COMPLIANCE_RUNBOOK_SEARCH</text>
+  <text x="810" y="385" text-anchor="middle" font-size="9" fill="#8A919E">25 remediation runbooks · searchable by category, framework, severity</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="600" y1="410" x2="600" y2="440" stroke="#0052FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 4: Orchestration -->
+  <rect x="40" y="445" width="1120" height="80" rx="8" fill="#FFFFFF" stroke="#0052FF" stroke-width="1.5"/>
+  <circle cx="70" cy="485" r="16" fill="#0052FF"/><text x="70" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="#FFF">4</text>
+  <text x="100" y="466" font-size="11" font-weight="600" fill="#0052FF">ORCHESTRATION</text>
+
+  <rect x="300" y="465" width="600" height="44" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="600" y="483" text-anchor="middle" font-size="12" font-weight="600" fill="#0052FF">Cortex Agent: CONTROLS_MONITORING_AGENT</text>
+  <text x="600" y="499" text-anchor="middle" font-size="9" fill="#8A919E">Tool 1: query_compliance_data (Analyst → SV) · Tool 2: search_runbooks (Search → Runbooks)</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="600" y1="525" x2="600" y2="555" stroke="#0052FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 5: Interfaces -->
+  <rect x="40" y="560" width="1120" height="80" rx="8" fill="#FFFFFF" stroke="#0052FF" stroke-width="1.5"/>
+  <circle cx="70" cy="600" r="16" fill="#0052FF"/><text x="70" y="605" text-anchor="middle" font-size="12" font-weight="700" fill="#FFF">5</text>
+  <text x="100" y="581" font-size="11" font-weight="600" fill="#0052FF">INTERFACES</text>
+
+  <rect x="200" y="585" width="340" height="40" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="370" y="610" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">Snowflake Intelligence</text>
+
+  <rect x="600" y="585" width="340" height="40" rx="6" fill="#E8F0FE" stroke="#0052FF" stroke-width="1"/>
+  <text x="770" y="610" text-anchor="middle" font-size="11" font-weight="600" fill="#0052FF">Streamlit Dashboard (4 tabs)</text>
+
+  <!-- Production path callout -->
+  <rect x="40" y="660" width="1120" height="46" rx="8" fill="none" stroke="#0052FF" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="600" y="680" text-anchor="middle" font-size="10" font-weight="600" fill="#0052FF">PRODUCTION PATH</text>
+  <text x="600" y="696" text-anchor="middle" font-size="9" fill="#8A919E">Anecdotes Data Share → Snowflake → Alerts on new critical violations → Auto-create Jira tickets → Scheduled AI enrichment</text>
+</svg>
